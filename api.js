@@ -20,21 +20,17 @@ app.use(
 app.use(cors());
 
 
-
-//get or post
-app.get("/Administrator", (req, res) => {
-    //Reacte veri döndürür.
-    // con.query("SELECT * FROM "+DB_PREFIX+"administrator", function (err, result, fields) {
-    //     res.json({ result: result });
-    // });
-
-
-    //req.body.(parametre) gelen veriler.
-
+//SQL INJECTION PROTECTION
+app.get('/api/v1/blog/:id', (req, res) => {
+    let blogId=req.params.id;
+    let SQL="SELECT * FROM " + DB_PREFIX + "blogs WHERE id=?"
+    con.query(SQL,blogId, function (err, result, fields) {
+        res.json({ 'results': result })
+    });
 });
-
 app.get('/api/v1/all-blogs', (req, res) => {
-    con.query("SELECT * FROM " + DB_PREFIX + "blogs", function (err, result, fields) {
+    let SQL="SELECT * FROM " + DB_PREFIX + "blogs"
+    con.query(SQL,null, function (err, result, fields) {
         res.json({ 'results': result })
     });
 });
